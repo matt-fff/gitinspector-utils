@@ -4,12 +4,16 @@ import os
 from datetime import datetime
 from terminaltables import AsciiTable
 
+def get_env_date(env_name):
+    return datetime.date(datetime.strptime(
+        os.environ[env_name], "%a %b %d %H:%M:%S %Z %Y"
+    ))
+
+
 def print_dailies(statistics):
 
-    start_date = datetime.date(datetime.strptime(
-        os.environ['START_DATE'], "%a %b %d %H:%M:%S %Z %Y"
-    ))
-    end_date = datetime.date(datetime.utcnow())
+    start_date = get_env_date('START_DATE')
+    end_date = get_env_date('END_DATE')
 
     days_passed = (end_date - start_date).days
     authors = statistics["gitinspector"]["changes"]["authors"]
