@@ -6,11 +6,12 @@ from terminaltables import AsciiTable
 
 def print_dailies(statistics):
 
-    start_date = datetime.strptime(
+    start_date = datetime.date(datetime.strptime(
         os.environ['START_DATE'], "%a %b %d %H:%M:%S %Z %Y"
-    )
+    ))
+    end_date = datetime.date(datetime.utcnow())
 
-    days_passed = (datetime.utcnow() - start_date).days
+    days_passed = (end_date - start_date).days
     authors = statistics["gitinspector"]["changes"]["authors"]
     dailies = [
         ["Author", "Commits/Day", "Inserts/Day", "Deletes/Day"]
