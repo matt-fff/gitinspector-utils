@@ -1,2 +1,5 @@
 ._venv
 .vscode
+.idea
+git-repos
+git-reports
