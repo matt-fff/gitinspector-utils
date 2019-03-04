@@ -2,7 +2,8 @@ pull-repos=$(shell cd ./git-repos && find . -maxdepth 1 -type d | grep '[A-Za-Z]
 monthly-report=$(shell cd ./git-repos && ls | xargs -t gitinspector -T --weeks=true --since=\"$(shell date --date='00:00 last month' +%Y-%m-%d)\" -F html > ../git-reports/month-to-date.html)
 weekly-report=$(shell cd ./git-repos && ls | xargs -t gitinspector --since=\"$(shell date --date='00:00 last week' +%Y-%m-%d)\" -F html > ../git-reports/week-to-date.html)
 show-reports=$(shell chromium $(shell pwd)/git-reports/week-to-date.html $(shell pwd)/git-reports/month-to-date.html)
-git-avg=$(shell cd ./git-repos && ls | xargs -t gitinspector --since=\"$1\" --until=\"$(shell date --date='00:00 today' +%Y-%m-%d)\" -F json | ../._venv/bin/python ../daily_stats.py > ../git-reports/git-avg.txt)
+git-avg-helper=$(shell cd ./git-repos && ls | xargs -t gitinspector --since=\"$1\" --until=\"$2\" -F json | ../._venv/bin/python ../daily_stats.py $1 $2 > ../git-reports/git-avg.txt)
+git-avg=$(call git-avg-helper,$1,$(shell date --date='00:00 today' +%Y-%m-%d))
 
 .PHONY: pull-repos monthly-report weekly-report show-reports run-reports git-avg git-avg-weekly git-avg-monthly
 git-avg-weekly:

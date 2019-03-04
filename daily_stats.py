@@ -4,16 +4,13 @@ import os
 from datetime import datetime
 from terminaltables import AsciiTable
 
-def get_env_date(env_name):
+def format_date(date_str):
     return datetime.date(datetime.strptime(
-        os.environ[env_name], "%a %b %d %H:%M:%S %Z %Y"
+        date_str, "%Y-%m-%d"
     ))
 
 
-def print_dailies(statistics):
-
-    start_date = get_env_date('START_DATE')
-    end_date = get_env_date('END_DATE')
+def print_dailies(statistics, start_date, end_date):
 
     days_passed = (end_date - start_date).days
     authors = statistics["gitinspector"]["changes"]["authors"]
@@ -33,4 +30,7 @@ def print_dailies(statistics):
 
 if __name__ == "__main__":
     STATS = sys.stdin.read()
-    print_dailies(json.loads(STATS))
+    print(sys.argv)
+    start_date = format_date(os.environ.get('START_DATE', sys.argv[1]))
+    end_date = format_date(os.environ.get('END_DATE', sys.argv[2]))
+    print_dailies(json.loads(STATS), start_date, end_date)
